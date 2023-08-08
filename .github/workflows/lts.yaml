@@ -31,4 +31,4 @@ jobs:
       if: env.IS_LTS == 'true'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: gh pr edit ${{ github.event.pull_request.number }} --add-reviewer=NotMyFault-org/dummy
+      run: gh pr edit ${{ github.event.pull_request.number }} --add-reviewer NotMyFault-org/dummy
