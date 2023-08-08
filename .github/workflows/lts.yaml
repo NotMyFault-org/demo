@@ -38,7 +38,6 @@ jobs:
           await github.rest.pulls.requestReviewers({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            pull_number: process.env.PR_NUMBER,
-            reviewers: [],
-            team_reviewers: ['@NotMyFault-org/dummy']
+            pull_number: context.payload.pull_request.number,
+            team_reviewers: ['dummy']
           });
