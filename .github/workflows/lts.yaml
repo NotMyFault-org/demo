@@ -10,6 +10,8 @@ jobs:
   handle_pr:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
     - name: Check if PR target branch starts with stable-
       if: startsWith(github.event.pull_request.base.ref, 'stable-')
       run: echo "IS_LTS=true" >> $GITHUB_ENV
