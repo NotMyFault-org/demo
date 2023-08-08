@@ -29,15 +29,4 @@ jobs:
 
     - name: Request review from jenkins/release
       if: env.IS_LTS == 'true'
-      uses: actions/github-script@v6
-      env:
-        PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
-      with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        script: |
-          await github.rest.pulls.requestReviewers({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.payload.pull_request.number,
-            team_reviewers: ['dummy']
-          });
+      run: gh pr review ${{ github.event.pull_request.number }} --request=NotMyFault-org/dummy
