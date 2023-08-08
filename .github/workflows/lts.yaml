@@ -40,5 +40,5 @@ jobs:
             repo: context.repo.repo,
             pull_number: process.env.PR_NUMBER,
             reviewers: [],
-            team_reviewers: ['NotMyFault-org/dummy']
+            team_reviewers: ['@NotMyFault-org/dummy']
           });
