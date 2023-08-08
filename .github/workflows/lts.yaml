@@ -1,4 +1,4 @@
-name: PR Actions for LTS Branch
+name: PR Actions for LTS Branch 
 
 on:
   pull_request:
