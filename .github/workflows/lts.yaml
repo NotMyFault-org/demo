@@ -1,0 +1,42 @@
+name: PR Actions for LTS Branch
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  handle_pr:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check if PR targets LTS branch
+      if: startsWith(github.event.pull_request.base.ref, 'stable-')
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.rest.issues.addLabels({
+            owner: context.payload.repository.owner.login,
+            repo: context.payload.repository.name,
+            issue_number: context.payload.pull_request.number,
+            labels: ['into-lts']
+          });
+          
+    - name: Set REQUEST_REVIEW environment variable
+      if: startsWith(github.event.pull_request.base.ref, 'stable-')
+      run: echo "REQUEST_REVIEW=true" >> $GITHUB_ENV
+
+    - name: Request review from jenkins/release
+      if: env.REQUEST_REVIEW == 'true'
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const prNumber = context.payload.pull_request.number;
+          await github.pulls.requestReviewers({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: prNumber,
+            reviewers: ["NotMyFault-org/dummy"]
+          });
